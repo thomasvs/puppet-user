@@ -19,5 +19,4 @@ define user::bin::git_wtf (
     source  => 'puppet:///modules/user/bin/git-wtf',
     require => User::Bin[$user],
   }
-  
 }
