@@ -1,0 +1,7 @@
+# WARNING: This file is managed by puppet.
+# WARNING: Do not manually edit it here, all changes will be discarded.
+<% @keys.each_pair do |key_name, type_key| -%>
+<% if @allusers == true or @users.flatten.join(' ').include?(key_name) -%>
+<%= type_key %> <%= key_name %>
+<% end -%>
+<% end -%>
