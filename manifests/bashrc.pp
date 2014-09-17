@@ -12,6 +12,7 @@ define user::bashrc (
   } else {
     $real_bashrc_source = 'puppet:///modules/user/bashrc/dotbashrc'
   }
+
   $home = user_home($user)
 
   file { "${home}/.bashrc":
