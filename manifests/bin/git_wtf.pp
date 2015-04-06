@@ -12,11 +12,12 @@ define user::bin::git_wtf (
   $home = user_home($user)
 
   file { "${home}/bin/git-wtf":
-    ensure => present,
-    owner  => $user,
-    group  => $group,
-    mode   => '0750',
-    source => 'puppet:///modules/user/bin/git-wtf',
+    ensure  => present,
+    owner   => $user,
+    group   => $group,
+    mode    => '0750',
+    source  => 'puppet:///modules/user/bin/git-wtf',
+    require => User::Bin[$user],
   }
   
 }
