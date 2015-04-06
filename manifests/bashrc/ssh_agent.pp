@@ -7,6 +7,10 @@ define user::bashrc::ssh_agent (
   $group = $title,
 ) {
 
+  package { 'keychain':
+    ensure => installed
+  }
+
   $home = user_home($user)
 
   file { "${home}/.bashrc.d/ssh-agent":
