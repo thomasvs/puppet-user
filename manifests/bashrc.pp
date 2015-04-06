@@ -5,8 +5,13 @@
 define user::bashrc (
   $user = $title,
   $group = $title,
-  $bashrc_source = 'puppet:///modules/user/bashrc/dotbashrc'
+  $bashrc_source = undef
 ) {
+  if ($bashrc_source) {
+    $real_bashrc_source = $bashrc_source
+  } else {
+    $real_bashrc_source = 'puppet:///modules/user/bashrc/dotbashrc'
+  }
   $home = user_home($user)
 
   file { "${home}/.bashrc":
@@ -14,7 +19,7 @@ define user::bashrc (
     owner  => $user,
     group  => $group,
     mode   => '0640',
-    source => $bashrc_source,
+    source => $real_bashrc_source,
   }
 
   file { "${home}/.bashrc.d":
