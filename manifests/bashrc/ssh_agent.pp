@@ -7,18 +7,27 @@ define user::bashrc::ssh_agent (
   $group = $title,
 ) {
 
-  package { 'keychain':
-    ensure => installed
+  case $::operatingsystem {
+    /^(RedHat|CentOS)$/: {
+
+    }
+    /^(Fedora|Ubuntu)$/: {
+      package { 'keychain':
+        ensure => installed
+      }
+
+      $home = user_home($user)
+
+      file { "${home}/.bashrc.d/ssh-agent":
+        ensure  => present,
+        owner   => $user,
+        group   => $group,
+        mode    => '0640',
+        source  => 'puppet:///modules/user/bashrc.d/ssh-agent',
+        require => User::Bashrc[$user],
+      }
+
+    }
   }
 
-  $home = user_home($user)
-
-  file { "${home}/.bashrc.d/ssh-agent":
-    ensure  => present,
-    owner   => $user,
-    group   => $group,
-    mode    => '0640',
-    source  => 'puppet:///modules/user/bashrc.d/ssh-agent',
-    require => User::Bashrc[$user],
-  }
 }
