@@ -3,13 +3,13 @@
 # This define deploys .ssh/authorized_keys
 #
 define user::ssh::authorized_keys (
-  $owner = $title,
-  $group = $title,
+  $user     = hiera("user::data::${title}::user", $title),
+  $group    = hiera("user::data::${title}::group", $title),
   $keys     = {},
   $allusers = true,
   $users    = [],
   $mode     = '0600',
-  $path = undef,
+  $path     = undef,
 ) {
 
   $home = user_home($owner)

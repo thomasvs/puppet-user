@@ -2,8 +2,8 @@
 #
 # This define sets up the .ssh hierarchy in the home directory.
 define user::ssh (
-  $user = $title,
-  $group = $title,
+  $user = hiera("user::data::${title}::user", $title),
+  $group = hiera("user::data::${title}::group", $title),
 ) {
 
   $home = user_home($user)
