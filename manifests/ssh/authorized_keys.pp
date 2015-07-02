@@ -12,7 +12,7 @@ define user::ssh::authorized_keys (
   $path     = undef,
 ) {
 
-  $home = user_home($owner)
+  $home = user_home($user)
 
   if ($path) {
     $real_path = $path
