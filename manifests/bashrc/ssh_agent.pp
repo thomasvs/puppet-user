@@ -7,14 +7,13 @@ define user::bashrc::ssh_agent (
   $group = $title,
 ) {
 
+  include user::bashrc::ssh_agent::install
+
   case $::operatingsystem {
     /^(RedHat|CentOS)$/: {
 
     }
     /^(Fedora|Ubuntu)$/: {
-      package { 'keychain':
-        ensure => installed
-      }
 
       $home = user_home($user)
 
