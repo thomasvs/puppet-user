@@ -3,8 +3,8 @@
 # This define deploys a .bashrc.d snippet to use a session ssh-agent
 #
 define user::bashrc::ssh_agent (
-  $user = $title,
-  $group = $title,
+  $user = hiera("user::data::${title}::user", $title),
+  $group = hiera("user::data::${title}::group", $title),
 ) {
 
   include user::bashrc::ssh_agent::install

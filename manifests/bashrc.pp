@@ -3,9 +3,9 @@
 # This define manages .bashrc and loads from .bashrc.d
 #
 define user::bashrc (
-  $user = $title,
-  $group = $title,
-  $bashrc_source = undef
+  $user = hiera("user::data::${title}::user", $title),
+  $group = hiera("user::data::${title}::group", $title),
+  $bashrc_source = hiera("user::data::${title}::bashrc_source", undef),
 ) {
   if ($bashrc_source) {
     $real_bashrc_source = $bashrc_source
