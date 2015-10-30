@@ -10,7 +10,6 @@ define user::vim (
   $home = user_home($user)
 
   file { [
-    "${home}/.vim",
     "${home}/.vim/ftplugin",
     ]
     :
