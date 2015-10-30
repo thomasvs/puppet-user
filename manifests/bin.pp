@@ -5,8 +5,8 @@
 # == Parameters
 #
 define user::bin (
-  $user = $title,
-  $group = $title,
+  $user = hiera("user::data::${title}::user", $title),
+  $group = hiera("user::data::${title}::group", $title),
 ) {
 
   $home = user_home($user)

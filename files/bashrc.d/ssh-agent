@@ -1,0 +1,17 @@
+# see keychain man page
+
+# if SSH_AUTH_SOCK is already set (for example, explicitly for sudo su,
+# don't start keychain
+
+if [ -z "$SSH_AUTH_SOCK" ];
+then
+
+  keychain --quiet --nocolor ~/.ssh/id_rsa
+
+  [ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
+  [ -f $HOME/.keychain/$HOSTNAME-sh ] && \
+    . $HOME/.keychain/$HOSTNAME-sh
+  [ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && \
+    . $HOME/.keychain/$HOSTNAME-sh-gpg
+
+fi

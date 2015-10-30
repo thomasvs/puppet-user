@@ -11,7 +11,7 @@ module Puppet::Parser::Functions
     fact = 'home_' + user
     home = lookupvar(fact)
 
-    if home != ''
+    if home == nil || home == :undefined
       debug "user_home(): could not find fact #{fact}, falling back"
       # fall back to sensible defaults
       case user

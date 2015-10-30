@@ -1,22 +1,15 @@
 # = Define: user::bin::git_wtf
 #
 # This define deploys the git_wtf script.
+# Kept for compatibility; invoking user::bin::deploy directly is recommended
 #
 # == Parameters
 #
 define user::bin::git_wtf (
-  $user = $title,
-  $group = $title,
+  $user  = hiera("user::data::${title}::user", $title),
 ) {
-
-  $home = user_home($user)
-
-  file { "${home}/bin/git-wtf":
-    ensure  => present,
-    owner   => $user,
-    group   => $group,
-    mode    => '0750',
-    source  => 'puppet:///modules/user/bin/git-wtf',
-    require => User::Bin[$user],
+  user::bin::deploy { "${user}-git-wtf":
+    user   => $user,
+    binary => 'git-wtf'
   }
 }
