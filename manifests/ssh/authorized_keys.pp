@@ -21,9 +21,9 @@ define user::ssh::authorized_keys (
   }
 
   file { $real_path:
-    owner   => $owner,
-    group   => $group, 
-    mode    => $mode, 
-    content => template('user/ssh//authorized_keys.erb'), 
-  } 
+    owner   => $user,
+    group   => $group,
+    mode    => $mode,
+    content => template('user/ssh//authorized_keys.erb'),
+  }
 }
