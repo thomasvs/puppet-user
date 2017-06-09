@@ -10,6 +10,7 @@ define user::ssh::authorized_keys (
   $users    = [],
   $mode     = '0600',
   $path     = undef,
+  $ensure   = present,
 ) {
 
   $home = user_home($user)
@@ -25,5 +26,6 @@ define user::ssh::authorized_keys (
     group   => $group,
     mode    => $mode,
     content => template('user/ssh//authorized_keys.erb'),
+    ensure  => $ensure,
   }
 }
