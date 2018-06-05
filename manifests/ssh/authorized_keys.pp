@@ -25,7 +25,8 @@ define user::ssh::authorized_keys (
     owner   => $user,
     group   => $group,
     mode    => $mode,
-    content => template('user/ssh//authorized_keys.erb'),
+    content => template('user/ssh/authorized_keys.erb'),
+    require => $require,
     ensure  => $ensure,
   }
 }
