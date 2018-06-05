@@ -17,8 +17,12 @@ define user::ssh::authorized_keys (
 
   if ($path) {
     $real_path = $path
+    $require = []
   } else {
     $real_path = "${home}/.ssh/authorized_keys"
+    $require = [
+      File["${home}/.ssh"],
+    ]
   }
 
   file { $real_path:
