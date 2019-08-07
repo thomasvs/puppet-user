@@ -17,12 +17,13 @@ define user::ssh::authorized_keys (
 
   if ($path) {
     $real_path = $path
-    $require = []
+    $_require = delete_undef_values(flatten([$require, ]))
   } else {
     $real_path = "${home}/.ssh/authorized_keys"
-    $require = [
+    $_require = delete_undef_values(flatten([
+      $require,
       File["${home}/.ssh"],
-    ]
+    ]))
   }
 
   file { $real_path:
@@ -30,7 +31,7 @@ define user::ssh::authorized_keys (
     group   => $group,
     mode    => $mode,
     content => template('user/ssh/authorized_keys.erb'),
-    require => $require,
+    require => $_require,
     ensure  => $ensure,
   }
 }
