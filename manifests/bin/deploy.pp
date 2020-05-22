@@ -16,6 +16,7 @@ define user::bin::deploy (
   $user  = undef,
   $group = undef,
   $binary = undef,
+  $binary_source_dir = "puppet:///modules/user/bin",
   $binary_source = undef,
 ) {
 
@@ -46,7 +47,7 @@ define user::bin::deploy (
   if ($binary_source) {
     $real_binary_source = $binary_source
   } else {
-    $real_binary_source = "puppet:///modules/user/bin/${real_binary}"
+    $real_binary_source = "${binary_source_dir}/${real_binary}"
   }
 
   file { "${home}/bin/${real_binary}":
