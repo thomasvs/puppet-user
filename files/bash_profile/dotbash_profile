@@ -1,0 +1,17 @@
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# customization
+if test -e ~/.bash_profile.d
+then
+  for f in ~/.bash_profile.d/*
+  do
+    source $f
+  done
+fi
+
+# User specific environment and startup programs
