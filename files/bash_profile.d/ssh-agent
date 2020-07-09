@@ -2,16 +2,18 @@
 
 # if SSH_AUTH_SOCK is already set (for example, explicitly for sudo su,
 # don't start keychain
-
 if [ -z "$SSH_AUTH_SOCK" ];
 then
+  # if we don't have a terminal, don't run; otherwise we block GDM logins
 
-  keychain --quiet --nocolor ~/.ssh/id_rsa
+  if [ -t 0];
+  then
+    keychain --quiet --nocolor ~/.ssh/id_rsa
 
-  [ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
-  [ -f $HOME/.keychain/$HOSTNAME-sh ] && \
-    . $HOME/.keychain/$HOSTNAME-sh
-  [ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && \
-    . $HOME/.keychain/$HOSTNAME-sh-gpg
-
+    [ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
+    [ -f $HOME/.keychain/$HOSTNAME-sh ] && \
+      . $HOME/.keychain/$HOSTNAME-sh
+    [ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && \
+      . $HOME/.keychain/$HOSTNAME-sh-gpg
+  fi
 fi
