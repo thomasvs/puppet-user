@@ -44,8 +44,7 @@ define user::directory (
   }
 
   file { "${home}/${real_directory}":
-    ensure  => present,
-    type    => directory,
+    ensure  => directory,
     owner   => $real_user,
     group   => $real_group,
     mode    => $mode

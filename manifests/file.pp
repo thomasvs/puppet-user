@@ -1,23 +1,24 @@
-# = Define: user::bin::deploy
+# = Define: user::file
 #
-# This define deploys scripts to the user's bin dir
+# This define deploys files to the user's dir
 #
-# parameters can be parsed from the title as ${user}:${binary}
+# parameters can be parsed from the title as ${user}:${file}
 #
 # == Parameters
 #
 # ** user: the user to deploy for; will get indirected through hiera
 # ** group: the group to deploy for; if undefined, looked up from hiera
-# ** binary: the name of the binary to deploy
-# ** binary_source: if not defined, deploys the binary with the same name
+# ** file: the name of the file to deploy
+# ** file_source: if not defined, deploys the file with the same name
 #    from this module
 #
-define user::bin::deploy (
+define user::file (
   $user  = undef,
   $group = undef,
-  $binary = undef,
-  $binary_source_dir = "puppet:///modules/user/bin",
-  $binary_source = undef,
+  $file = undef,
+  $mode = undef,
+  $file_source_dir = "puppet:///modules/user",
+  $file_source = undef,
 ) {
 
   validate_string($user)
@@ -28,12 +29,12 @@ define user::bin::deploy (
     default => hiera("user::data::${user}:user", $user),
   }
 
-  validate_string($binary)
+  validate_string($file)
 
-  $real_binary = $binary ? {
+  $real_file = $file ? {
     ''       => regsubst($title, '^[^:]+:(.*)$', '\1'),
     undef    => regsubst($title, '^[^:]+:(.*)$', '\1'),
-    default  => $binary
+    default  => $file
   }
 
   $home = user_home($real_user)
@@ -44,18 +45,17 @@ define user::bin::deploy (
     $real_group = hiera("user::data::${real_user}::group", $real_user)
   }
 
-  if ($binary_source) {
-    $real_binary_source = $binary_source
+  if ($file_source) {
+    $real_file_source = $file_source
   } else {
-    $real_binary_source = "${binary_source_dir}/${real_binary}"
+    $real_file_source = "${file_source_dir}/${real_file}"
   }
 
-  file { "${home}/bin/${real_binary}":
+  file { "${home}/${real_file}":
     ensure  => present,
     owner   => $real_user,
     group   => $real_group,
-    mode    => '0750',
-    source  => $real_binary_source,
-    require => User::Bin[$real_user],
+    mode    => $mode,
+    source  => $real_file_source
   }
 }
