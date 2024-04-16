@@ -1,17 +1,29 @@
 # .bash_profile
+# when this exists, /etc/skel/.profile does not get read by bash
 
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
 	. ~/.bashrc
 fi
 
-# customization
-if test -e ~/.bash_profile.d
-then
-  for f in ~/.bash_profile.d/*
-  do
-    source $f
-  done
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
 fi
 
-# User specific environment and startup programs
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+# customization
+if test -d ~/.bash_profile.d
+then
+  files=$(shopt -s nullglob dotglob; echo ~/.bash_profile.d/*)
+  if (( ${#files} ))
+  then
+    for f in ${files}
+    do
+      source $f
+    done
+  fi
+fi
