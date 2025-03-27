@@ -1,6 +1,6 @@
 class user::bash_profile::ssh_agent::install {
 
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     /^(RedHat|CentOS)$/: {
 
     }
