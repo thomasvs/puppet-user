@@ -1,0 +1,6 @@
+# Maintain ~/.ssh/ssh_auth_sock pointing to active live socket
+if [ -x "$HOME/bin/ssh-reconnect-sockets" ]; then
+    . "$HOME/bin/ssh-reconnect-sockets" --quiet
+else
+    export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+fi

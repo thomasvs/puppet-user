@@ -1,20 +1,16 @@
 # = Define: user::bashrc::git
 #
 # This define deploys a .bashrc.d snippet to support a git command prompt
+# Kept for compatibility; invoking user::bashrc_d directly is recommended
 #
 define user::bashrc::git (
   $user  = hiera("user::data::${title}::user", $title),
   $group = hiera("user::data::${title}::group", $title),
 ) {
 
-  $home = user_home($user)
-
-  file { "${home}/.bashrc.d/git":
-    ensure  => present,
-    owner   => $user,
+  user::bashrc_d { "${user}-git":
+    user    => $user,
     group   => $group,
-    mode    => '0640',
-    source  => 'puppet:///modules/user/bashrc.d/git',
-    require => User::Bashrc[$user],
+    snippet => 'git',
   }
 }
