@@ -6,15 +6,23 @@ if [ -f ~/.bashrc ]; then
 	. ~/.bashrc
 fi
 
+add_to_path_front() {
+  case ":$PATH:" in
+    *":$1:"*) ;; # already present
+    *) PATH="$1:$PATH" ;;
+  esac
+}
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+    add_to_path_front "$HOME/bin"
 fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+    add_to_path_front "$HOME/.local/bin"
 fi
+export PATH
 # customization
 if test -d ~/.bash_profile.d
 then

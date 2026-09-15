@@ -11,6 +11,21 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+add_to_path_front() {
+  case ":$PATH:" in
+    *":$1:"*) ;; # already present
+    *) PATH="$1:$PATH" ;;
+  esac
+}
+
+if [ -d "$HOME/.local/bin" ] ; then
+    add_to_path_front "$HOME/.local/bin"
+fi
+if [ -d "$HOME/bin" ] ; then
+    add_to_path_front "$HOME/bin"
+fi
+export PATH
+
 # thomas: customization
 if test -e ~/.bashrc.d
 then
