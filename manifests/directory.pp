@@ -16,7 +16,7 @@ define user::directory (
   $user  = undef,
   $group = undef,
   $directory = undef,
-  $mode = '0777',
+  $mode = '0770',
 ) {
 
   validate_string($user)
