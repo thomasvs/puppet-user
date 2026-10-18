@@ -9,7 +9,13 @@ define user::bash_profile::ssh_agent (
 
   include user::bash_profile::ssh_agent::install
 
-  case $facts['os']['name'] {
+  if $facts != undef {
+    $os_name = $facts['os']['name']
+  } else {
+    $os_name = $::operatingsystem
+  }
+
+  case $os_name {
     /^(RedHat|CentOS)$/: {
 
     }
