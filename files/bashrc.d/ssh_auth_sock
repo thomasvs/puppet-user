@@ -1,6 +1,28 @@
 # Maintain ~/.ssh/ssh_auth_sock pointing to active live socket
-if [ -x "$HOME/bin/ssh-reconnect-sockets" ]; then
+_is_working_ssh_socket() {
+    local s="$1"
+    [ -n "$s" ] && [ -S "$s" ] || return 1
+    local ret
+    if command -v timeout >/dev/null 2>&1; then
+        SSH_AUTH_SOCK="$s" timeout 1 ssh-add -l >/dev/null 2>&1
+        ret=$?
+    else
+        SSH_AUTH_SOCK="$s" ssh-add -l >/dev/null 2>&1
+        ret=$?
+    fi
+    [ $ret -eq 0 ] || [ $ret -eq 1 ]
+}
+
+if [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/ssh_auth_sock" ] && \
+   [ "$(readlink -f "$SSH_AUTH_SOCK" 2>/dev/null)" != "$HOME/.ssh/ssh_auth_sock" ] && \
+   _is_working_ssh_socket "$SSH_AUTH_SOCK"; then
+    mkdir -p "$HOME/.ssh" 2>/dev/null
+    ln -sfn "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
+elif _is_working_ssh_socket "$HOME/.ssh/ssh_auth_sock"; then
+    :
+elif [ -x "$HOME/bin/ssh-reconnect-sockets" ]; then
     . "$HOME/bin/ssh-reconnect-sockets" --quiet
-else
-    export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
 fi
+
+export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+unset -f _is_working_ssh_socket
