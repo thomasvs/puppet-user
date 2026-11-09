@@ -12,6 +12,7 @@
 # ** snippet_source_dir: if not defined, deploys the snippet with the same name
 #    from this module (default: "puppet:///modules/user/bashrc.d")
 # ** snippet_source: full custom source path (overrides snippet_source_dir)
+# ** content: inline or templated snippet content (overrides source)
 #
 define user::bashrc_d (
   $user               = undef,
@@ -19,6 +20,7 @@ define user::bashrc_d (
   $snippet            = undef,
   $snippet_source_dir = "puppet:///modules/user/bashrc.d",
   $snippet_source     = undef,
+  $content            = undef,
 ) {
 
   validate_string($user)
@@ -45,7 +47,9 @@ define user::bashrc_d (
     $real_group = hiera("user::data::${real_user}::group", $real_user)
   }
 
-  if ($snippet_source) {
+  if ($content) {
+    $real_snippet_source = undef
+  } elsif ($snippet_source) {
     $real_snippet_source = $snippet_source
   } else {
     $real_snippet_source = "${snippet_source_dir}/${real_snippet}"
@@ -57,6 +61,7 @@ define user::bashrc_d (
     group   => $real_group,
     mode    => '0640',
     source  => $real_snippet_source,
-    require => User::Bashrc[$real_user],
+    content => $content,
+    require => File["${home}/.bashrc.d"],
   }
 }

@@ -11,11 +11,13 @@ define user::bin (
 
   $home = user_home($user)
 
-  file { "${home}/bin":
-    ensure  => directory,
-    owner   => $user,
-    group   => $group,
-    mode    => '0750',
+  if ! defined(File["${home}/bin"]) {
+    file { "${home}/bin":
+      ensure  => directory,
+      owner   => $user,
+      group   => $group,
+      mode    => '0750',
+    }
   }
-  
+
 }

@@ -56,6 +56,6 @@ define user::bin::deploy (
     group   => $real_group,
     mode    => '0750',
     source  => $real_binary_source,
-    require => User::Bin[$real_user],
+    require => File["${home}/bin"],
   }
 }

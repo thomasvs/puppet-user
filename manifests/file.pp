@@ -11,6 +11,8 @@
 # ** file: the name of the file to deploy
 # ** file_source: if not defined, deploys the file with the same name
 #    from this module
+# ** content: inline or templated file content (overrides source)
+# ** replace: whether Puppet overwrites existing content (default: true)
 #
 define user::file (
   $user  = undef,
@@ -19,6 +21,8 @@ define user::file (
   $mode = undef,
   $file_source_dir = "puppet:///modules/user",
   $file_source = undef,
+  $content = undef,
+  $replace = true,
 ) {
 
   validate_string($user)
@@ -45,7 +49,9 @@ define user::file (
     $real_group = hiera("user::data::${real_user}::group", $real_user)
   }
 
-  if ($file_source) {
+  if ($content) {
+    $real_file_source = undef
+  } elsif ($file_source) {
     $real_file_source = $file_source
   } else {
     $real_file_source = "${file_source_dir}/${real_file}"
@@ -56,6 +62,8 @@ define user::file (
     owner   => $real_user,
     group   => $real_group,
     mode    => $mode,
-    source  => $real_file_source
+    source  => $real_file_source,
+    content => $content,
+    replace => $replace,
   }
 }

@@ -19,7 +19,9 @@ define user::directory (
   $mode = '0770',
 ) {
 
-  validate_string($user)
+  if ($user != undef) {
+    validate_string($user)
+  }
 
   $real_user = $user ? {
     ''      => regsubst($title, /^([^:]+):.*$/, '\1'),
@@ -27,7 +29,9 @@ define user::directory (
     default => hiera("user::data::${user}:user", $user),
   }
 
-  validate_string($directory)
+  if ($directory != undef) {
+    validate_string($directory)
+  }
 
   $real_directory = $directory ? {
     ''       => regsubst($title, /^[^:]+:(.*)$/, '\1'),
@@ -43,10 +47,12 @@ define user::directory (
     $real_group = hiera("user::data::${real_user}::group", $real_user)
   }
 
-  file { "${home}/${real_directory}":
-    ensure  => directory,
-    owner   => $real_user,
-    group   => $real_group,
-    mode    => $mode
+  if ! defined(File["${home}/${real_directory}"]) {
+    file { "${home}/${real_directory}":
+      ensure  => directory,
+      owner   => $real_user,
+      group   => $real_group,
+      mode    => $mode
+    }
   }
 }
