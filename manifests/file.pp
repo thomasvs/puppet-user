@@ -24,16 +24,16 @@ define user::file (
   validate_string($user)
 
   $real_user = $user ? {
-    ''      => regsubst($title, '^([^:]+):.*$', '\1'),
-    undef   => regsubst($title, '^([^:]+):.*$', '\1'),
+    ''      => regsubst($title, /^([^:]+):.*$/, '\1'),
+    undef   => regsubst($title, /^([^:]+):.*$/, '\1'),
     default => hiera("user::data::${user}:user", $user),
   }
 
   validate_string($file)
 
   $real_file = $file ? {
-    ''       => regsubst($title, '^[^:]+:(.*)$', '\1'),
-    undef    => regsubst($title, '^[^:]+:(.*)$', '\1'),
+    ''       => regsubst($title, /^[^:]+:(.*)$/, '\1'),
+    undef    => regsubst($title, /^[^:]+:(.*)$/, '\1'),
     default  => $file
   }
 

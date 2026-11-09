@@ -26,16 +26,16 @@ define user::ssh::config_d (
   validate_string($user)
 
   $real_user = $user ? {
-    ''      => regsubst($title, '^([^:]+):.*$', '\1'),
-    undef   => regsubst($title, '^([^:]+):.*$', '\1'),
+    ''      => regsubst($title, /^([^:]+):.*$/, '\1'),
+    undef   => regsubst($title, /^([^:]+):.*$/, '\1'),
     default => hiera("user::data::${user}:user", $user),
   }
 
   validate_string($snippet)
 
   $real_snippet = $snippet ? {
-    ''       => regsubst($title, '^[^:]+:(.*)$', '\1'),
-    undef    => regsubst($title, '^[^:]+:(.*)$', '\1'),
+    ''       => regsubst($title, /^[^:]+:(.*)$/, '\1'),
+    undef    => regsubst($title, /^[^:]+:(.*)$/, '\1'),
     default  => $snippet
   }
 
