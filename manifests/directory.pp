@@ -26,7 +26,7 @@ define user::directory (
   $real_user = $user ? {
     ''      => regsubst($title, /^([^:]+):.*$/, '\1'),
     undef   => regsubst($title, /^([^:]+):.*$/, '\1'),
-    default => hiera("user::data::${user}:user", $user),
+    default => lookup("user::data::${user}:user", { 'default_value' => $user }),
   }
 
   if ($directory != undef) {
@@ -44,7 +44,7 @@ define user::directory (
   if ($group) {
     $real_group = $group
   } else {
-    $real_group = hiera("user::data::${real_user}::group", $real_user)
+    $real_group = lookup("user::data::${real_user}::group", { 'default_value' => $real_user })
   }
 
   if ! defined(File["${home}/${real_directory}"]) {

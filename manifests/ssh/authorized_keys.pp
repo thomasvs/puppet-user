@@ -3,8 +3,8 @@
 # This define deploys .ssh/authorized_keys
 #
 define user::ssh::authorized_keys (
-  $user     = hiera("user::data::${title}::user", $title),
-  $group    = hiera("user::data::${title}::group", $title),
+  $user     = lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group    = lookup("user::data::${title}::group", { 'default_value' => $title }),
   $keys     = {},
   $allusers = true,
   $users    = [],

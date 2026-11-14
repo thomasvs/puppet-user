@@ -4,8 +4,8 @@
 # including .ssh/config and .ssh/config.d for drop-in snippets.
 #
 define user::ssh (
-  $user = hiera("user::data::${title}::user", $title),
-  $group = hiera("user::data::${title}::group", $title),
+  $user = lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group = lookup("user::data::${title}::group", { 'default_value' => $title }),
   $ensure = present,
 ) {
 

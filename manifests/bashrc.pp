@@ -3,14 +3,14 @@
 # This define manages .bashrc and loads from .bashrc.d
 #
 define user::bashrc (
-  $user = hiera("user::data::${title}::user", $title),
-  $group = hiera("user::data::${title}::group", $title),
-  $bashrc_source = hiera("user::data::${title}::bashrc_source", undef),
+  $user = lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group = lookup("user::data::${title}::group", { 'default_value' => $title }),
+  $bashrc_source = lookup("user::data::${title}::bashrc_source", { 'default_value' => undef }),
 ) {
   if ($bashrc_source) {
     $real_bashrc_source = $bashrc_source
   } else {
-    $real_bashrc_source = hiera("user::data::${user}::bashrc_source", 'puppet:///modules/user/bashrc/dotbashrc')
+    $real_bashrc_source = lookup("user::data::${user}::bashrc_source", { 'default_value' => 'puppet:///modules/user/bashrc/dotbashrc' })
   }
 
   $home = user_home($user)

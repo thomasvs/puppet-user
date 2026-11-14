@@ -4,8 +4,8 @@
 # Kept for compatibility; invoking user::bashrc_d directly is recommended
 #
 define user::bashrc::ssh_auth_sock (
-  $user  = hiera("user::data::${title}::user", $title),
-  $group = hiera("user::data::${title}::group", $title),
+  $user  = lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group = lookup("user::data::${title}::group", { 'default_value' => $title }),
 ) {
 
   user::bashrc_d { "${user}-ssh_auth_sock":

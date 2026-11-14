@@ -6,7 +6,7 @@
 # == Parameters
 #
 define user::bin::git_wtf (
-  $user  = hiera("user::data::${title}::user", $title),
+  $user  = lookup("user::data::${title}::user", { 'default_value' => $title }),
 ) {
   user::bin::deploy { "${user}-git-wtf":
     user   => $user,
