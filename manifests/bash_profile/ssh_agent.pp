@@ -3,8 +3,8 @@
 # This define deploys a .bash_profile.d snippet to use a session ssh-agent
 #
 define user::bash_profile::ssh_agent (
-  $user = lookup("user::data::${title}::user", { 'default_value' => $title }),
-  $group = lookup("user::data::${title}::group", { 'default_value' => $title }),
+  $user = user_lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group = user_lookup("user::data::${title}::group", { 'default_value' => $title }),
 ) {
 
   include user::bash_profile::ssh_agent::install

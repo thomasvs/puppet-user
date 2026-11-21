@@ -4,8 +4,8 @@
 # Kept for compatibility; invoking user::bashrc_d directly is recommended
 #
 define user::bashrc::k8s (
-  $user  = lookup("user::data::${title}::user", { 'default_value' => $title }),
-  $group = lookup("user::data::${title}::group", { 'default_value' => $title }),
+  $user  = user_lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group = user_lookup("user::data::${title}::group", { 'default_value' => $title }),
 ) {
 
   user::bashrc_d { "${user}-k8s":

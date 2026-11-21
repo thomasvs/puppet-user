@@ -2,9 +2,9 @@
 #
 # This define sets up the .vim hierarchy in the home directory.
 define user::vim (
-  $user = lookup("user::data::${title}::user", { 'default_value' => $title }),
-  $group = lookup("user::data::${title}::group", { 'default_value' => $title }),
-  $vimrc_source = lookup("user::data::${title}::vim_source", { 'default_value' => undef }),
+  $user = user_lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $group = user_lookup("user::data::${title}::group", { 'default_value' => $title }),
+  $vimrc_source = user_lookup("user::data::${title}::vim_source", { 'default_value' => undef }),
 ) {
 
   $home = user_home($user)

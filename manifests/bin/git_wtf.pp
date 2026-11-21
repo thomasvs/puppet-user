@@ -6,7 +6,7 @@
 # == Parameters
 #
 define user::bin::git_wtf (
-  $user  = lookup("user::data::${title}::user", { 'default_value' => $title }),
+  $user  = user_lookup("user::data::${title}::user", { 'default_value' => $title }),
 ) {
   user::bin::deploy { "${user}-git-wtf":
     user   => $user,

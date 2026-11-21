@@ -23,10 +23,14 @@ define user::directory (
     validate_string($user)
   }
 
+  $_title_parts = split($title, ':')
+  $_title_user  = $_title_parts[0]
+  $_title_rest  = join(delete_at($_title_parts, 0), ':')
+
   $real_user = $user ? {
-    ''      => regsubst($title, /^([^:]+):.*$/, '\1'),
-    undef   => regsubst($title, /^([^:]+):.*$/, '\1'),
-    default => lookup("user::data::${user}:user", { 'default_value' => $user }),
+    ''      => $_title_user,
+    undef   => $_title_user,
+    default => user_lookup("user::data::${user}:user", { 'default_value' => $user }),
   }
 
   if ($directory != undef) {
@@ -34,8 +38,8 @@ define user::directory (
   }
 
   $real_directory = $directory ? {
-    ''       => regsubst($title, /^[^:]+:(.*)$/, '\1'),
-    undef    => regsubst($title, /^[^:]+:(.*)$/, '\1'),
+    ''       => $_title_rest,
+    undef    => $_title_rest,
     default  => $directory
   }
 
@@ -44,7 +48,7 @@ define user::directory (
   if ($group) {
     $real_group = $group
   } else {
-    $real_group = lookup("user::data::${real_user}::group", { 'default_value' => $real_user })
+    $real_group = user_lookup("user::data::${real_user}::group", { 'default_value' => $real_user })
   }
 
   if ! defined(File["${home}/${real_directory}"]) {
