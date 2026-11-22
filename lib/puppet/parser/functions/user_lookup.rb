@@ -47,13 +47,13 @@ EOS
 
       case merge
       when 'hash', 'deep'
-        Puppet::Parser::Functions.autoloader.load(:hiera_hash)
+        Puppet::Parser::Functions.function(:hiera_hash)
         has_default ? function_hiera_hash([key, default_val]) : function_hiera_hash([key])
       when 'unique'
-        Puppet::Parser::Functions.autoloader.load(:hiera_array)
+        Puppet::Parser::Functions.function(:hiera_array)
         has_default ? function_hiera_array([key, default_val]) : function_hiera_array([key])
       else
-        Puppet::Parser::Functions.autoloader.load(:hiera)
+        Puppet::Parser::Functions.function(:hiera)
         has_default ? function_hiera([key, default_val]) : function_hiera([key])
       end
     end
